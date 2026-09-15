@@ -1,0 +1,10 @@
+# Generated manually -- regenerate with roxygen2::roxygenise() after edits
+export(ade_api)
+export(ade_cache_clear)
+export(ade_cache_info)
+export(ade_cache_refresh)
+export(ade_data)
+export(ade_dims)
+export(ade_list)
+export(ade_meta)
+export(ade_search)

@@ -1,0 +1,44 @@
+Package: statsnzade
+Title: Search and Extract Data from the Stats NZ Aotearoa Data Explorer
+Version: 0.1.0
+Authors@R: 
+    person("Eugene", "Isack", , "eisack@gmail.com", role = c("aut", "cre"))
+Description: Search, browse and extract data and metadata from Stats
+    NZ's 'Aotearoa Data Explorer' ('ADE') 'SDMX' REST API
+    (<https://explore.data.stats.govt.nz/>). Provides
+    functions to list available datasets, inspect their dimensions and
+    codelists, and download data, in the spirit of packages such as
+    'OECD' and 'rsdmx'. Dataset and dimension metadata is cached locally
+    as a lightweight database so that repeated lookups do not require
+    repeated API calls.
+License: MIT + file LICENSE
+URL: https://github.com/yourname/statsnzade,
+    https://yourname.github.io/statsnzade/
+BugReports: https://github.com/yourname/statsnzade/issues
+Depends:
+    R (>= 4.1)
+Imports:
+    cli,
+    DBI,
+    dplyr,
+    httr2,
+    purrr,
+    readr,
+    RSQLite,
+    rsdmx,
+    tibble,
+    tidyr,
+    tools,
+    utils
+Suggests:
+    htmltools,
+    knitr,
+    rmarkdown,
+    testthat (>= 3.1.4),
+    withr
+VignetteBuilder: knitr
+Config/testthat/edition: 3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+LazyData: true
+Config/roxygen2/version: 8.1.0
