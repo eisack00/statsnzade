@@ -55,7 +55,7 @@ ade_build_key <- function(dataset, filter, refresh = FALSE) {
 #' @param dots The result of `list(...)` from [ade_data()].
 #'
 #' @return A list with `filter` (the remaining dots, for
-#'   [ade_build_key()]), `start_time` and `end_time`.
+#'   `ade_build_key()`), `start_time` and `end_time`.
 #' @noRd
 ade_split_dots <- function(dots) {
   dot_names <- names(dots)

@@ -40,8 +40,15 @@ ade_api("your-subscription-key")
 datasets <- ade_list()
 head(datasets)
 
-ade_search("food price")
+ade_search("estimate", field = "description")
+ade_search("population estimate", field = "description")
 ```
+
+Searching for `"estimate"` in descriptions returns 49 datasets in the
+current catalogue, including `CEN23_HOU_100` and `IWI18_EST_001`.
+Searching for `"population estimate"` returns 14, including
+`POPES_ERP_008` (subnational population estimates by regional council,
+SA2, age, and sex).
 
 The first call to `ade_list()` (or any other `statsnzade` function that
 needs metadata) builds a local cache from the ADE metadata. Every call
@@ -61,30 +68,52 @@ ade_cache_refresh()
 ## Inspecting a dataset's structure
 
 ```{r}
-str <- ade_dims("CPI_ALC_001")
-str$dimensions
-str$CPI_MEASURE
+pop_dims <- ade_dims("POPES_ERP_008")
+pop_dims$dimensions
+pop_dims$AGE_POPES_ERP_008
+pop_dims$AREA_POPES_ERP_008
+pop_dims$ETHNIC_POPES_ERP_008
+pop_dims$SEX_POPES_ERP_008
+pop_dims$YEAR_POPES_ERP_008
 ```
+
+This dataset has dimensions for area, age, year at 30 June, sex, and
+ethnic group. Example total codes are `RC9999` for total New Zealand by
+regional councils, `999999` for total people by age, `2023` for the
+year, `3` for total people by sex, and `9999` for total people by
+ethnic group.
 
 ## Downloading data
 
 ```{r}
 # Whole dataset
-cpi <- ade_data("CPI_ALC_001")
+population <- ade_data("POPES_ERP_008")
 
-# Filtered by dimension code and a time period
-cpi_index <- ade_data(
-  "CPI_ALC_001",
-  FREQ = "M",
-  CPI_MEASURE = "B",
-  start_time = "2015"
+# Total population for New Zealand in 2023
+population_2023 <- ade_data(
+  "POPES_ERP_008",
+  AREA_POPES_ERP_008 = "RC9999",
+  AGE_POPES_ERP_008 = "999999",
+  YEAR_POPES_ERP_008 = "2023",
+  SEX_POPES_ERP_008 = "3",
+  ETHNIC_POPES_ERP_008 = "9999"
 )
 ```
 
 ## Exploring dataset metadata interactively
 
 ```{r}
-ade_meta("CPI_ALC_001")
+ade_meta("POPES_ERP_008")
+```
+
+By default this renders the dataset's name, description, and dimensions
+as a page in the RStudio Viewer (or your browser outside RStudio). Pass
+`list = TRUE` to get the raw data back instead:
+
+```{r}
+overview <- ade_meta("POPES_ERP_008", list = TRUE)
+overview$name
+overview$dimensions
 ```
 
 ## A caveat inherited from the API

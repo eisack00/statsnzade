@@ -16,9 +16,8 @@ knitr::opts_chunk$set(
 ```
 
 `statsnzade` searches and extracts data from Stats NZ's Aotearoa Data
-Explorer (ADE) SDMX API. It follows the same shape as packages like
-`OECD` and `rsdmx`: list datasets, inspect their structure, then
-download data.
+Explorer (ADE) SDMX API. Use it to list datasets, inspect their
+structure, and download data.
 
 ```{r setup}
 library(statsnzade)
@@ -40,8 +39,12 @@ ade_api("your-subscription-key")
 datasets <- ade_list()
 head(datasets)
 
-ade_search("food price")
+ade_search("estimate", field = "description")
+ade_search("population estimate", field = "description")
 ```
+
+These searches can help find relevant dataset IDs, such as
+`POPES_ERP_008` for subnational population estimates.
 
 The first call to `ade_list()` (or any other `statsnzade` function that
 needs metadata) builds a local cache from the ADE metadata. Every call
@@ -61,30 +64,33 @@ ade_cache_refresh()
 ## Inspecting a dataset's structure
 
 ```{r}
-str <- ade_dims("CPI_ALC_001")
-str$dimensions
-str$CPI_MEASURE
+pop_dims <- ade_dims("POPES_ERP_008")
+pop_dims$dimensions
+pop_dims$AREA_POPES_ERP_008
+pop_dims$YEAR_POPES_ERP_008
 ```
+
+For example, `RC9999` represents total New Zealand by regional councils,
+and `2023` selects the year at 30 June 2023.
 
 ## Downloading data
 
 ```{r}
 # Whole dataset
-cpi <- ade_data("CPI_ALC_001")
+population <- ade_data("POPES_ERP_008")
 
-# Filtered by dimension code and a time period
-cpi_index <- ade_data(
-  "CPI_ALC_001",
-  FREQ = "M",
-  CPI_MEASURE = "B",
-  start_time = "2015"
+# New Zealand estimates for 2023 across the other dimensions
+population_2023 <- ade_data(
+  "POPES_ERP_008",
+  AREA_POPES_ERP_008 = "RC9999",
+  YEAR_POPES_ERP_008 = "2023"
 )
 ```
 
 ## Exploring dataset metadata interactively
 
 ```{r}
-ade_meta("CPI_ALC_001")
+ade_meta("POPES_ERP_008")
 ```
 
 By default this renders the dataset's name, description, and dimensions
@@ -92,9 +98,9 @@ as a page in the RStudio Viewer (or your browser outside RStudio). Pass
 `list = TRUE` to get the raw data back instead:
 
 ```{r}
-ov <- ade_meta("CPI_ALC_001", list = TRUE)
-ov$name
-ov$dimensions
+overview <- ade_meta("POPES_ERP_008", list = TRUE)
+overview$name
+overview$dimensions
 ```
 
 ## A caveat inherited from the API
