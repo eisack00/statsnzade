@@ -33,7 +33,7 @@ ade_request <- function(url, api_key) {
 #'
 #' `ade_data()`'s API responses come back with the ADE's own column
 #' naming (a mix of upper case, spaces and punctuation, e.g.
-#' `"CPI_MEASURE: CPI measure"` or `"Data value"`). This tidies them up
+#' `"AREA_POPES_ERP_008: Area"` or `"Data value"`). This tidies them up
 #' so the result is pipeline-ready without the user having to rename
 #' columns themselves.
 #'

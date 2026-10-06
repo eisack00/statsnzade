@@ -14,15 +14,15 @@ ade_data(
 )
 }
 \arguments{
-\item{dataset}{A dataset id, e.g. \code{"CPI_ALC_001"}.}
+\item{dataset}{A dataset id, e.g. \code{"POPES_ERP_008"}.}
 
 \item{...}{Controls which series are returned, and (optionally) the
 time range. Any combination of:
 \itemize{
 \item \strong{Named dimension filters}, naming the dimensions you want to
-filter, e.g. \verb{FREQ = "M", CPI_MEASURE = c("B", "AC")}. Dimensions
-you don't name are left open (all codes). See \code{\link[=ade_dims]{ade_dims()}} for
-valid dimension and code ids.
+filter, e.g. \verb{AREA_POPES_ERP_008 = "RC9999", YEAR_POPES_ERP_008 = "2023"}.
+Dimensions you don't name are left open (all codes). See \code{\link[=ade_dims]{ade_dims()}}
+for valid dimension and code ids.
 \item \code{start_time} and/or \code{end_time}, e.g. \code{start_time = "2020-01-01"}.
 Passed through to the API as \code{startPeriod}/\code{endPeriod}. Accepted
 formats depend on the dataset's frequency (e.g. \code{"2015"},
@@ -30,11 +30,12 @@ formats depend on the dataset's frequency (e.g. \code{"2015"},
 observations.
 \item \strong{Unnamed dimension values}, one per dimension in dataset order
 (as in \code{ade_dims(dataset)$dimensions}), e.g.
-\code{ade_data("CPI_ALC_001", "M", "", "B")}. Use \code{""} or \code{NA} to
-leave a dimension open. Don't mix this form with named dimension
-filters.
+\code{ade_data("POPES_ERP_008", "RC9999", "", "2023", "", "")}.
+Use \code{""} or \code{NA} to leave a dimension open. Don't mix this form
+with named dimension filters.
 \item A single \strong{unnamed, pre-formatted key string}, copied from the
-ADE web UI's API link (e.g. \code{"M...B"}) -- set \code{pre_formatted = TRUE} when using this form.
+ADE web UI's API link (e.g. \code{"RC9999..2023.."}) -- set
+\code{pre_formatted = TRUE} when using this form.
 }}
 
 \item{pre_formatted}{If \code{TRUE}, \code{...} must contain exactly one
@@ -64,18 +65,14 @@ dataset id.
 \examples{
 \dontrun{
 # Whole dataset
-df <- ade_data("CPI_ALC_001")
+population <- ade_data("POPES_ERP_008")
 
-# Filter on named dimensions, with a start time
-cpi_data <- ade_data(
-  "CPI_ALC_001",
-  FREQ = "M",
-  CPI_MEASURE = "B",
-  start_time = "2020-01-01"
+# Filter by area and year; other dimensions are left open
+population_2023 <- ade_data(
+  "POPES_ERP_008",
+  AREA_POPES_ERP_008 = "RC9999",
+  YEAR_POPES_ERP_008 = "2023"
 )
-
-# Pre-formatted key copied from the ADE web UI
-df <- ade_data("CPI_ALC_001", "M...B", pre_formatted = TRUE)
 }
 }
 \seealso{

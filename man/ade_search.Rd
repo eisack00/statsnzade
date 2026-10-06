@@ -33,8 +33,8 @@ match \code{string}.
 }
 \examples{
 \dontrun{
-ade_search("food price")
-ade_search("CPI_FPI", field = "id")
+ade_search("estimate", field = "description")
+ade_search("POPES_ERP", field = "id")
 }
 }
 \seealso{

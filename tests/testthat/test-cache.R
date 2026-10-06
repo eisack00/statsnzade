@@ -5,16 +5,16 @@ test_that("ade_build_key returns 'all' for NULL filter", {
 test_that("ade_build_key builds a named-list key without hitting the network", {
   local_mocked_bindings(
     ade_dims = function(dataset, refresh = FALSE) {
-      list(dimensions = tibble::tibble(dimension = c("FREQ", "CPI_MEASURE", "CPI_NZHEC")))
+      list(dimensions = tibble::tibble(dimension = c("FREQ", "MEASURE", "CATEGORY")))
     }
   )
 
   expect_equal(
-    ade_build_key("CPI_ALC_001", filter = list(FREQ = "M")),
+    ade_build_key("TEST_DATASET", filter = list(FREQ = "M")),
     "M.."
   )
   expect_equal(
-    ade_build_key("CPI_ALC_001", filter = list(FREQ = "M", CPI_MEASURE = c("B", "AC"))),
+    ade_build_key("TEST_DATASET", filter = list(FREQ = "M", MEASURE = c("B", "AC"))),
     "M.B+AC."
   )
 })
@@ -22,12 +22,12 @@ test_that("ade_build_key builds a named-list key without hitting the network", {
 test_that("ade_build_key builds a positional key without hitting the network", {
   local_mocked_bindings(
     ade_dims = function(dataset, refresh = FALSE) {
-      list(dimensions = tibble::tibble(dimension = c("FREQ", "CPI_MEASURE", "CPI_NZHEC")))
+      list(dimensions = tibble::tibble(dimension = c("FREQ", "MEASURE", "CATEGORY")))
     }
   )
 
   expect_equal(
-    ade_build_key("CPI_ALC_001", filter = list("M", "", "")),
+    ade_build_key("TEST_DATASET", filter = list("M", "", "")),
     "M.."
   )
 })
@@ -40,7 +40,7 @@ test_that("ade_build_key errors on unknown named dimensions", {
   )
 
   expect_error(
-    ade_build_key("CPI_ALC_001", filter = list(NOT_A_DIM = "X")),
+    ade_build_key("TEST_DATASET", filter = list(NOT_A_DIM = "X")),
     "Unknown dimension"
   )
 })
@@ -48,12 +48,12 @@ test_that("ade_build_key errors on unknown named dimensions", {
 test_that("ade_build_key errors on positional filter of wrong length", {
   local_mocked_bindings(
     ade_dims = function(dataset, refresh = FALSE) {
-      list(dimensions = tibble::tibble(dimension = c("FREQ", "CPI_MEASURE")))
+      list(dimensions = tibble::tibble(dimension = c("FREQ", "MEASURE")))
     }
   )
 
   expect_error(
-    ade_build_key("CPI_ALC_001", filter = list("M")),
+    ade_build_key("TEST_DATASET", filter = list("M")),
     "dimension value"
   )
 })

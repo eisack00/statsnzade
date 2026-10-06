@@ -12,7 +12,7 @@
 #' session so repeated calls for the same dataset are free. Use
 #' `refresh = TRUE` to bypass that and re-fetch.
 #'
-#' @param dataset A dataset id, e.g. `"CPI_ALC_001"`.
+#' @param dataset A dataset id, e.g. `"POPES_ERP_008"`.
 #' @param refresh Force a re-fetch from the API, bypassing the
 #'   in-session cache for this dataset.
 #' @param api_key API key, defaults to [ade_api()].
@@ -27,9 +27,9 @@
 #'
 #' @examples
 #' \dontrun{
-#' str <- ade_dims("CPI_ALC_001")
-#' str$dimensions
-#' str$CPI_MEASURE
+#' pop_dims <- ade_dims("POPES_ERP_008")
+#' pop_dims$dimensions
+#' pop_dims$AREA_POPES_ERP_008
 #' }
 ade_dims <- function(dataset, refresh = FALSE, api_key = ade_api()) {
   if (!refresh && !is.null(the$structures[[dataset]])) {

@@ -7,7 +7,7 @@
 ade_dims(dataset, refresh = FALSE, api_key = ade_api())
 }
 \arguments{
-\item{dataset}{A dataset id, e.g. \code{"CPI_ALC_001"}.}
+\item{dataset}{A dataset id, e.g. \code{"POPES_ERP_008"}.}
 
 \item{refresh}{Force a re-fetch from the API, bypassing the
 in-session cache for this dataset.}
@@ -36,9 +36,9 @@ session so repeated calls for the same dataset are free. Use
 }
 \examples{
 \dontrun{
-str <- ade_dims("CPI_ALC_001")
-str$dimensions
-str$CPI_MEASURE
+pop_dims <- ade_dims("POPES_ERP_008")
+pop_dims$dimensions
+pop_dims$AREA_POPES_ERP_008
 }
 }
 \seealso{

@@ -78,13 +78,13 @@ ade_split_dots <- function(dots) {
 #' automatically from the metadata cache, so you only need to supply the
 #' dataset id.
 #'
-#' @param dataset A dataset id, e.g. `"CPI_ALC_001"`.
+#' @param dataset A dataset id, e.g. `"POPES_ERP_008"`.
 #' @param ... Controls which series are returned, and (optionally) the
 #'   time range. Any combination of:
 #'   * **Named dimension filters**, naming the dimensions you want to
-#'     filter, e.g. `FREQ = "M", CPI_MEASURE = c("B", "AC")`. Dimensions
-#'     you don't name are left open (all codes). See [ade_dims()] for
-#'     valid dimension and code ids.
+#'     filter, e.g. `AREA_POPES_ERP_008 = "RC9999", YEAR_POPES_ERP_008 = "2023"`.
+#'     Dimensions you don't name are left open (all codes). See [ade_dims()]
+#'     for valid dimension and code ids.
 #'   * `start_time` and/or `end_time`, e.g. `start_time = "2020-01-01"`.
 #'     Passed through to the API as `startPeriod`/`endPeriod`. Accepted
 #'     formats depend on the dataset's frequency (e.g. `"2015"`,
@@ -92,12 +92,12 @@ ade_split_dots <- function(dots) {
 #'     observations.
 #'   * **Unnamed dimension values**, one per dimension in dataset order
 #'     (as in `ade_dims(dataset)$dimensions`), e.g.
-#'     `ade_data("CPI_ALC_001", "M", "", "B")`. Use `""` or `NA` to
-#'     leave a dimension open. Don't mix this form with named dimension
-#'     filters.
+#'     `ade_data("POPES_ERP_008", "RC9999", "", "2023", "", "")`.
+#'     Use `""` or `NA` to leave a dimension open. Don't mix this form
+#'     with named dimension filters.
 #'   * A single **unnamed, pre-formatted key string**, copied from the
-#'     ADE web UI's API link (e.g. `"M...B"`) -- set `pre_formatted =
-#'     TRUE` when using this form.
+#'     ADE web UI's API link (e.g. `"RC9999..2023.."`) -- set
+#'     `pre_formatted = TRUE` when using this form.
 #' @param pre_formatted If `TRUE`, `...` must contain exactly one
 #'   unnamed element, used as-is as the SDMX query key rather than
 #'   being built from dimension names/positions. `start_time` and
@@ -118,18 +118,14 @@ ade_split_dots <- function(dots) {
 #' @examples
 #' \dontrun{
 #' # Whole dataset
-#' df <- ade_data("CPI_ALC_001")
+#' population <- ade_data("POPES_ERP_008")
 #'
-#' # Filter on named dimensions, with a start time
-#' cpi_data <- ade_data(
-#'   "CPI_ALC_001",
-#'   FREQ = "M",
-#'   CPI_MEASURE = "B",
-#'   start_time = "2020-01-01"
+#' # Filter by area and year; other dimensions are left open
+#' population_2023 <- ade_data(
+#'   "POPES_ERP_008",
+#'   AREA_POPES_ERP_008 = "RC9999",
+#'   YEAR_POPES_ERP_008 = "2023"
 #' )
-#'
-#' # Pre-formatted key copied from the ADE web UI
-#' df <- ade_data("CPI_ALC_001", "M...B", pre_formatted = TRUE)
 #' }
 ade_data <- function(dataset,
                      ...,

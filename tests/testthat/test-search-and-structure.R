@@ -1,20 +1,20 @@
 fixture_datasets <- tibble::tibble(
-  dataset_id = c("CPI_ALC_001", "CPI_FPI_001", "CPI_FPI_002"),
-  agency_id = "STATSNZ.ECIN",
-  version = "1",
+  dataset_id = c("POPES_ERP_008", "POPES_ERP_009", "POPES_ERP_010"),
+  agency_id = "STATSNZ",
+  version = "1.0",
   description = c(
-    "Consumer Price Index: Alcohol and Tobacco Index for New Zealand",
-    "Consumer Price Index: Food Price Index for New Zealand",
-    "Consumer Price Index: Food Price Index for Regions"
+    "Population estimate by regional council",
+    "Population estimate by age group",
+    "Census dwelling count by region"
   )
 )
 
 test_that("ade_search matches on id or description", {
-  by_desc <- ade_search("food price", datasets = fixture_datasets)
-  expect_equal(by_desc$dataset_id, c("CPI_FPI_001", "CPI_FPI_002"))
+  by_desc <- ade_search("population estimate", datasets = fixture_datasets)
+  expect_equal(by_desc$dataset_id, c("POPES_ERP_008", "POPES_ERP_009"))
 
-  by_id <- ade_search("CPI_ALC", datasets = fixture_datasets, field = "id")
-  expect_equal(by_id$dataset_id, "CPI_ALC_001")
+  by_id <- ade_search("POPES_ERP_010", datasets = fixture_datasets, field = "id")
+  expect_equal(by_id$dataset_id, "POPES_ERP_010")
 
   none <- ade_search("nonexistent", datasets = fixture_datasets)
   expect_equal(nrow(none), 0)
@@ -22,22 +22,22 @@ test_that("ade_search matches on id or description", {
 
 test_that("ade_search respects field and ignore_case", {
   expect_equal(
-    nrow(ade_search("FOOD", datasets = fixture_datasets, field = "description")),
+    nrow(ade_search("POPULATION", datasets = fixture_datasets, field = "description")),
     2
   )
   expect_equal(
-    nrow(ade_search("FOOD", datasets = fixture_datasets, field = "description", ignore_case = FALSE)),
+    nrow(ade_search("POPULATION", datasets = fixture_datasets, field = "description", ignore_case = FALSE)),
     0
   )
 })
 
 test_that("ade_dims reshapes cached codes into a list of data frames", {
   fixture_codes <- tibble::tibble(
-    dataset_id = "CPI_ALC_001",
-    dimension = c("FREQ", "CPI_MEASURE", "CPI_MEASURE"),
-    dimension_description = c("Frequency", "Measure", "Measure"),
-    code_value = c("M", "B", "AC"),
-    code_description = c("Monthly", "Index number", "Percentage change")
+    dataset_id = "POPES_ERP_008",
+    dimension = c("AREA_POPES_ERP_008", "YEAR_POPES_ERP_008", "YEAR_POPES_ERP_008"),
+    dimension_description = c("Area", "Year at 30 June", "Year at 30 June"),
+    code_value = c("RC9999", "2018", "2023"),
+    code_description = c("Total New Zealand by regional councils", "2018", "2023")
   )
 
   local_mocked_bindings(
@@ -48,12 +48,12 @@ test_that("ade_dims reshapes cached codes into a list of data frames", {
     ade_fetch_dataset_structure = function(dataset, agency_id, version, api_key) fixture_codes
   )
 
-  str <- ade_dims("CPI_ALC_001")
+  str <- ade_dims("POPES_ERP_008")
 
-  expect_named(str, c("dimensions", "CPI_MEASURE", "FREQ"))
-  expect_equal(sort(str$dimensions$dimension), c("CPI_MEASURE", "FREQ"))
-  expect_equal(nrow(str$CPI_MEASURE), 2)
-  expect_equal(names(str$FREQ), c("id", "label"))
+  expect_named(str, c("dimensions", "AREA_POPES_ERP_008", "YEAR_POPES_ERP_008"))
+  expect_equal(sort(str$dimensions$dimension), c("AREA_POPES_ERP_008", "YEAR_POPES_ERP_008"))
+  expect_equal(nrow(str$YEAR_POPES_ERP_008), 2)
+  expect_equal(names(str$AREA_POPES_ERP_008), c("id", "label"))
 })
 
 test_that("ade_dims errors for an unknown dataset", {
