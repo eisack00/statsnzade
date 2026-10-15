@@ -101,12 +101,3 @@ as a page in the RStudio Viewer (or your browser outside RStudio). Pass
 overview <- ade_meta("POPES_ERP_008", list = TRUE)
 overview$name
 overview$dimensions
-```
-
-## A caveat inherited from the API
-
-Allowed codes (what you get from `ade_dims()`) are defined
-**one dimension at a time**. They don't tell you which *combinations* of
-codes across dimensions actually occur in the data. To check that, query
-`ade_data()` and inspect the series that come back, or request
-`detail=serieskeysonly` directly against the data endpoint.
